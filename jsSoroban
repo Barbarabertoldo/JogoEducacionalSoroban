@@ -101,3 +101,14 @@ function atualizarValor() {
 }
 
 desenharSoroban();
+function resetarSoroban() {
+  // Limpa todo conteúdo SVG
+  while (svg.firstChild) {
+    svg.removeChild(svg.firstChild);
+  }
+  // Reseta valor exibido
+  document.getElementById("valor-total").textContent = "Valor: 0";
+  // Desenha novamente o soroban
+  desenharSoroban();
+}
+
