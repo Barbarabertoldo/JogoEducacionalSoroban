@@ -111,4 +111,3 @@ function resetarSoroban() {
   // Desenha novamente o soroban
   desenharSoroban();
 }
-
