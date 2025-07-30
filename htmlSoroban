@@ -15,7 +15,7 @@
   <svg id="soroban" height="350" role="img" aria-label="Soroban interativo com contas clicáveis"></svg>
 </div>
 
-<button onclick="window.location.reload()">Resetar Soroban</button>
+<button onclick="resetarSoroban()">Resetar Soroban</button>
 
 
   <script src="script.js"></script>
