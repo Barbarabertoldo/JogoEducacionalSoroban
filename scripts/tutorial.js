@@ -1,6 +1,6 @@
 function iniciarTutorial() {
   document.getElementById("main-content").innerHTML = `
-    <img src="imagens/logo.png" alt="Logo da Academia" class="logo">
+    <img src="assets/logo.png" alt="Logo da Academia" class="logo">
     <div class="content">
       <h1>Bem-vindo ao Tutorial do Soroban!</h1>
       <p>O tutorial começou, e você aprenderá a história, cultura e como usar o Soroban.</p>
