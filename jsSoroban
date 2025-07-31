@@ -9,7 +9,8 @@ const barraY = 160;
 function desenharSoroban() {
   const margem = 80;
   const larguraSVG = margem + espacamentoH * (numHastes - 1);
-svg.setAttribute("width", larguraSVG);
+  svg.setAttribute("width", larguraSVG);
+
   for (let i = 0; i < numHastes; i++) {
     const x = 40 + i * espacamentoH;
 
@@ -65,6 +66,26 @@ function criarConta(x, y, hasteIndex, tipo) {
     const ativo = conta.getAttribute("data-ativo") === "true";
     const originalY = parseFloat(conta.getAttribute("data-original-y"));
     const deslocamento = tipo === "heaven" ? 20 : -20;
+
+    // Bloquear ativação das contas inferiores se a de cima não estiver ativa
+    if (tipo === "earth" && !ativo) {
+      const todasContas = svg.querySelectorAll("polygon");
+      const contasMesmaHaste = Array.from(todasContas).filter(c =>
+        c.getAttribute("data-haste") === String(hasteIndex) &&
+        c.getAttribute("data-tipo") === "earth"
+      );
+
+      const indexAtual = contasMesmaHaste.findIndex(c => c === conta);
+
+      if (indexAtual > 0) {
+        const contaDeCima = contasMesmaHaste[indexAtual - 1];
+        const ativaCima = contaDeCima.getAttribute("data-ativo") === "true";
+        if (!ativaCima) {
+          return; // impede ativar se a conta acima não estiver ativa
+        }
+      }
+    }
+
     const novoY = ativo ? originalY : originalY + deslocamento;
 
     const newPoints = [
@@ -101,13 +122,12 @@ function atualizarValor() {
 }
 
 desenharSoroban();
+
 function resetarSoroban() {
-  // Limpa todo conteúdo SVG
   while (svg.firstChild) {
     svg.removeChild(svg.firstChild);
   }
-  // Reseta valor exibido
+
   document.getElementById("valor-total").textContent = "Valor: 0";
-  // Desenha novamente o soroban
   desenharSoroban();
 }
