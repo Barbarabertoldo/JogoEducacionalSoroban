@@ -67,25 +67,38 @@ function criarConta(x, y, hasteIndex, tipo) {
     const originalY = parseFloat(conta.getAttribute("data-original-y"));
     const deslocamento = tipo === "heaven" ? 20 : -20;
 
-    // Bloquear ativação das contas inferiores se a de cima não estiver ativa
-    if (tipo === "earth" && !ativo) {
+    if (tipo === "earth") {
       const todasContas = svg.querySelectorAll("polygon");
       const contasMesmaHaste = Array.from(todasContas).filter(c =>
         c.getAttribute("data-haste") === String(hasteIndex) &&
         c.getAttribute("data-tipo") === "earth"
       );
-
       const indexAtual = contasMesmaHaste.findIndex(c => c === conta);
 
-      if (indexAtual > 0) {
-        const contaDeCima = contasMesmaHaste[indexAtual - 1];
-        const ativaCima = contaDeCima.getAttribute("data-ativo") === "true";
-        if (!ativaCima) {
-          return; // impede ativar se a conta acima não estiver ativa
+      if (!ativo) {
+        // Tentando ativar conta inferior:
+        // Só permite se a conta imediatamente acima já estiver ativa (exceto a primeira que não tem acima)
+        if (indexAtual > 0) {
+          const contaDeCima = contasMesmaHaste[indexAtual - 1];
+          const ativaCima = contaDeCima.getAttribute("data-ativo") === "true";
+          if (!ativaCima) {
+            return; // bloqueia ativar sem a de cima ativa
+          }
+        }
+      } else {
+        // Tentando desativar conta inferior:
+        // Só permite se a conta imediatamente abaixo já estiver desativada (exceto a última que não tem abaixo)
+        if (indexAtual < contasMesmaHaste.length - 1) {
+          const contaDeBaixo = contasMesmaHaste[indexAtual + 1];
+          const ativaBaixo = contaDeBaixo.getAttribute("data-ativo") === "true";
+          if (ativaBaixo) {
+            return; // bloqueia desativar se a conta de baixo ainda estiver ativa
+          }
         }
       }
     }
 
+    // Para contas "heaven" ou se passar as verificações para "earth"
     const novoY = ativo ? originalY : originalY + deslocamento;
 
     const newPoints = [
@@ -104,6 +117,7 @@ function criarConta(x, y, hasteIndex, tipo) {
 
   svg.appendChild(conta);
 }
+
 
 function atualizarValor() {
   const contas = svg.querySelectorAll("polygon");
