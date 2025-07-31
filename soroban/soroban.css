@@ -1,0 +1,37 @@
+body {
+  font-family: sans-serif;
+  background: #eee;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+#valor-total {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.soroban-container {
+  display: flex;
+  justify-content: center;
+  background-color: #222;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+svg {
+  background-color: #111;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+polygon:hover {
+  cursor: pointer;
+  stroke: gold;
+  stroke-width: 2;
+}
